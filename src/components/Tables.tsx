@@ -24,17 +24,28 @@ const style = {
   p: 4,
 };
 
+type Row = {
+  companyName: String,
+  jobRole: String,
+  jobDesc: String,
+  dateOfApplication: String,
+  location: String,
+  status: number
+}
+
 export default function BasicTable({
   columns,
   rows,
 }: {
   columns: String[];
-  rows: any;
+  rows: Row[];
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [desc, setDesc] = React.useState<String>("ABC");
+
+  console.log(rows);
 
   return (
     <div style={{ padding: "16px" }}>
@@ -63,7 +74,7 @@ export default function BasicTable({
                     setDesc(row.jobDesc);
                   }}
                 >
-                  {row.jobDesc}
+                  {row.jobDesc.substring(0, 10) + '...'}
                 </TableCell>
                 <TableCell>{row.dateOfApplication}</TableCell>
                 <TableCell>{row.location}</TableCell>

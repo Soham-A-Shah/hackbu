@@ -16,6 +16,7 @@
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "axios": "^1.6.7",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -46,5 +47,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "options": {
+    "allowedHosts": ["localhost", ".localhost"],
+    "proxy": "https://localhost:8080/"
   }
 }

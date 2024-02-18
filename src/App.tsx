@@ -36,14 +36,14 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(`https://localhost:8080/${id}`);
-        setRows(response.data);
+        const response = await axios.get(`http://localhost:8080/api/v1/job/4`);
+        setRows(response.data.data);
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
     };
 
-    // fetchData();
+    fetchData();
   }, []);
 
   // setRows([
