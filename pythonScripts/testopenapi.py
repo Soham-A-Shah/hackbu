@@ -1,4 +1,6 @@
 import openai
+import pdfkit
+import jinja2
 import pymongo
 from webscrapping import extract_text_after_keyword  # Import your web scraping function
 
@@ -58,3 +60,19 @@ result = openai.ChatCompletion.create(
 )
 
 print(result.choices[0].message.content)
+
+
+data = {
+    'summary': result.choices[0].message.content.summary,
+    'skills': result.choices[0].message.content.skills,
+    'experience': result.choices[0].message.content.experience
+}
+
+template_loader = jinja2.FileSystemLoader('./')
+template_env = jinja2.Environment(loader=template_loader)
+template = template_env.get_template('resume.html')
+output = template.render(data)
+
+config = pdfkit.configuration(wkhtmltopdf=r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
+pdfkit.from_string(output, 'resume.pdf', configuration=config)
+

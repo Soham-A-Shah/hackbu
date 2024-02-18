@@ -61,7 +61,7 @@ export const executeScrapping = (req, res) => {
 
   try {
     console.log("hello from execute")
-    executePythonScript(path.resolve('../be-node/pythonScripts/testopenapi.py'), url)
+    executePythonScript(path.resolve('../hackbu/pythonScripts/testopenapi.py'), url)
     .then((output) => {
       // Assuming the Python script outputs data in JSON format
       console.log(output)
@@ -73,7 +73,7 @@ export const executeScrapping = (req, res) => {
       })
     })
     .catch((error) => {
-    console.log("hello from error")
+    console.log("hello from error :::   ")
 
       console.error("Error executing Python script:", error);
     });

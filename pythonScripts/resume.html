@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume - Chirag D Jethwa</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    ul {
+      margin-top: 5px;
+      margin-bottom: 10px;
+    }
+    li {
+      margin-bottom: 5px;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .underline {
+    text-decoration: underline;
+    }
+    .inline {
+    display: inline-block;
+    margin: 0;
+}
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Chirag D Jethwa</h1>
+  <p style="text-align: center;">Binghamton, NY | (607) 595-8231 | cjethwa@binghamton.edu | linkedin.com/in/chiragjethwa6/ | github.com/Chiragjethwa6/</p>
+  <div class="section">
+    <h2 class="underline">SUMMARY</h2>
+    <p>{{summary}}</p>
+  </div>
+  <div class="section">
+    <h2 class="underline">EDUCATION</h2>
+    <h4 class="inline">Binghamton University, State University of New York</h4>
+    <p class="inline">Master of Science in Computer Science, May 2025</p>
+    <h4 class="inline">KJ Somaiya College of Engineering, Maharashtra</h4>
+    <p class="inline">Bachelor of Technology in Computer Engineering, May 2021</p>
+  </div>
+  <div class="section">
+    <h2 class="underline">TECHNICAL SKILLS</h2>
+    <p>{{', '.join(skills)}}</p>
+  </div>
+  <div class="section">
+    <h2 class="underline">PROFESSIONAL EXPERIENCE</h2>
+    {% for item in experience %}
+        <h3 style="display: inline;">{{item.title}}</h3>
+        <ul>
+            <li>{{item.description[0]}}</li>
+            <li>{{item.description[1]}}</li>
+            <li>{{item.description[2]}}</li>
+        </ul>
+        <p>Skills : {{item.technologies}}</p>
+    {% endfor %}
+  </div>
+  <div class="section">
+    <h2 class="underline">COMPUTER SCIENCE PROJECTS</h2>
+    <h3>Capstone Project | Python | TensorFlow | Flask | JavaScript</h3>
+    <ul>
+      <li>Created an Extension for Chrome which detects the Explicit Images from webpage using Deep Learning model and filters out those images which were captured.</li>
+    </ul>
+    <h3>Bidding App | NodeJS | ExpressJS | AngularJS | MongoDB</h3>
+    <ul>
+      <li>Designed and developed a web-based bidding platform where users can both bid on available items and list their own items for bidding.</li>
+    </ul>
+    <h3>Bus Reservation System | Python | Flask | JavaScript | PostgreSQL | HTML | CSS</h3>
+    <ul>
+      <li>A web app developed as a bus ticket booking system with features: user account &amp; session, multiple ticket booking, ticket cancellation, payment gateway, search filtering.</li>
+    </ul>
+  </div>
+</body>
+
+
+</html>
