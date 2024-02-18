@@ -18,7 +18,7 @@ export const getApplicationList = async (req, res) => {
   });
 
   const sql = `SELECT 
-  c.company_name AS companyName,
+  j.company_name AS companyName,
   j.job_role AS jobRole,
   j.description AS jobDesc,
   a.date AS dateOfApplication,
@@ -26,9 +26,7 @@ export const getApplicationList = async (req, res) => {
 FROM 
   Application a
 JOIN 
-  Job j ON a.job_id = j.id
-JOIN 
-  Company c ON j.company_id = c.id;`;
+  Job j ON a.job_id = j.id;`;
   const queryPromise = new Promise((resolve, reject) => {
     con.query(sql, (err, result) => {
       if (err) reject(err);
