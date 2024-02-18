@@ -1,4 +1,5 @@
 import mysql from "mysql";
+import { executePythonScript, insertIntoMySQL } from './Python.js'
 
 export const getApplicationList = async (req, res) => {
   const { id } = req.params;
@@ -50,3 +51,33 @@ JOIN
     con.end();
   }
 };
+
+export const executeScrapping = (req, res) => {
+  const { url } = req.body;
+
+  try {
+    executePythonScript('../pythonScripts/webscrapping.py', url)
+    .then((output) => {
+      // Assuming the Python script outputs data in JSON format
+      const parsedData = JSON.parse(output);
+      // Insert the parsed data into MySQL database
+      insertIntoMySQL(parsedData);
+    })
+    .catch((error) => {
+      console.error("Error executing Python script:", error);
+    });
+
+    res.status(200).json({
+      message: "Success"
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(400).json({
+      message: "U r a failure like Naruto"
+    })
+  }
+
+  res.status(200).json({
+    message: "Success"
+  })
+}

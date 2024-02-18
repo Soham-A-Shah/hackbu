@@ -1,6 +1,7 @@
 import express from "express";
-import {getApplicationList} from '../controllers/Job.js'
+import { getApplicationList, executeScrapping } from "../controllers/Job.js";
 
-export const jobRouter = express.Router()
+export const jobRouter = express.Router();
 
-jobRouter.route("/").get(getApplicationList)
+jobRouter.route("/").get(getApplicationList);
+jobRouter.route("/scrap").get(executeScrapping);
