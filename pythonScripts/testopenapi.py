@@ -2,6 +2,10 @@ import openai
 import pdfkit
 import jinja2
 import pymongo
+import time
+import json
+import pandas as pd
+from html_to_pdf import html_to_pdf
 from webscrapping import extract_text_after_keyword  # Import your web scraping function
 
 # Connect to MongoDB
@@ -17,7 +21,7 @@ print(old_resume_doc)
 # Scrape job description
 job_description = extract_text_after_keyword()  # Call your web scraping function here
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 prompt = f"""
 Here is my old resume:
@@ -30,24 +34,13 @@ This is the job description and skills:
 
 Enhance my resume and include the missing skills . Rewrite the job duties with relevant and impressive skills according to job description to improve my ATS score for this job.\n 
 Return the output in following format : 
-Give me a json data which has summary as a key and give 2 line value for that, skills as a value and give list of skills as a value,
+Give me a json data with proper formatting and parsing which has summary as a key and give 2 line value for that, skills as a value and give list of skills as a value,
 and give experiece as a list of experiences having objects consisted of titlr, technologies and list of 3 descriptions points
    data = 
     'summary': ' ',
     'skills': ['Python', 'Java'.......]
-    'experience': [
-        
-            'title': " ",
-            'technologies': " ",
-            'description': [
-                " "
-                " "
-                " "
-            ]
-        ,
-  ],
-
-if there are multiple experiences make multiple formats inside experience bracket like above . 
+    'experience': ['title': " ",'technologies': " ",'description': [" "," "," ",]],
+    if there are multiple experiences make multiple formats inside experience bracket like above . 
 """
 
 
@@ -58,21 +51,65 @@ result = openai.ChatCompletion.create(
         {"role": "user", "content": prompt}
     ],
 )
+# new_data = {}
+# data = result.choices[0].message.content
 
-print(result.choices[0].message.content)
 
+# string_object = data.strip('```').strip()
+# start_index = string_object.find('"summary": "') + len('"summary": "')
+# end_index = string_object.find('"', start_index)
+# summary = string_object[start_index:end_index]
 
-data = {
-    'summary': result.choices[0].message.content.summary,
-    'skills': result.choices[0].message.content.skills,
-    'experience': result.choices[0].message.content.experience
+# # Extracting skills
+# start_index = string_object.find('"skills": [') + len('"skills": [')
+# end_index = string_object.find(']', start_index) + 1
+# skills = string_object[start_index:end_index]
+
+# # Extracting experience
+# start_index = string_object.find('"experience": [') + len('"experience": [')
+# end_index = string_object.find(']', start_index) + 1
+# experience = string_object[start_index:end_index]
+
+# print(summary)
+# print(skills)
+# print(experience)
+# # print(json_str.summary)
+# data_dict = json.load(data)   
+# print("::" ,data_dict)
+# html_to_pdf(result.choices[0].message.content)
+
+# time.sleep(5)
+
+data2 = {
+    'summary': 'Dedicated and experienced Software Engineer with a strong foundation in building robust solutions. Pursuing MS in Computer Science with a keen interest in Security Engineering. Actively seeking an opportunity to contribute to the innovation of financial products in a dynamic environment.',
+    'skills': ["Python", "Java", "C++", "C#", "JavaScript", "HTML", "CSS", "SQL", "MongoDB", "PostgreSQL", "MySQL", "AWS", "Azure", "Docker", "Git", "GitHub", "Linux", "Windows", "MacOS", "TypeScript", "ReactJS", "React Native"],
+    'experience': {
+            "title": "Software Engineer, Iorta Technology Solutions",
+            "technologies": "NodeJS | MongoDB",
+            "description": [
+                {
+                    "Developed and executed automation scripts to enhance secure deployments and adopted secure coding practices for heightened product integrity.",
+                    "Collaborated with security teams to implement robust alerting systems for immediate response to security events leveraging innovative approaches.",
+                    "Conducted extensive research on vulnerabilities in Web2 and Web3 environments, specifically focusing on Defi protocols, to fortify system defenses."
+                },
+                {
+                    "Developed and executed automation scripts to enhance secure deployments and adopted secure coding practices for heightened product integrity.",
+                    "Collaborated with security teams to implement robust alerting systems for immediate response to security events leveraging innovative approaches.",
+                    "Conducted extensive research on vulnerabilities in Web2 and Web3 environments, specifically focusing on Defi protocols, to fortify system defenses."
+                }
+            ]
+    }    
 }
 
-template_loader = jinja2.FileSystemLoader('./')
-template_env = jinja2.Environment(loader=template_loader)
-template = template_env.get_template('resume.html')
-output = template.render(data)
+try:
+    template_loader = jinja2.FileSystemLoader('./')
+    template_env = jinja2.Environment(loader=template_loader)
+    template = template_env.get_template('resume.html')
+    output = template.render(data2)
 
-config = pdfkit.configuration(wkhtmltopdf=r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
-pdfkit.from_string(output, 'resume.pdf', configuration=config)
+    config = pdfkit.configuration(wkhtmltopdf=r"C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
+    pdfkit.from_string(output, 'resume.pdf', configuration=config)
+    print("Generated PDF File")
+except Exception as e:
+    print("Error:", e)
 
