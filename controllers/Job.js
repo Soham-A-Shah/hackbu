@@ -2,6 +2,7 @@ import mysql from "mysql";
 import { executePythonScript, insertIntoMySQL } from './Python.js'
 
 export const getApplicationList = async (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
   const { id } = req.params;
   const con = mysql.createConnection({
     host: process.env.MYSQL_HOST,
@@ -51,25 +52,33 @@ JOIN
     con.end();
   }
 };
+import path from "path";
 
 export const executeScrapping = (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+  console.log(req.body)
   const { url } = req.body;
 
   try {
-    executePythonScript('../pythonScripts/webscrapping.py', url)
+    console.log("hello from execute")
+    executePythonScript(path.resolve('../be-node/pythonScripts/testopenapi.py'), url)
     .then((output) => {
       // Assuming the Python script outputs data in JSON format
-      const parsedData = JSON.parse(output);
+      console.log(output)
+      // const parsedData = JSON.parse(output);
       // Insert the parsed data into MySQL database
-      insertIntoMySQL(parsedData);
+      // insertIntoMySQL(parsedData);
+      res.status(200).json({
+        message: "Success"
+      })
     })
     .catch((error) => {
+    console.log("hello from error")
+
       console.error("Error executing Python script:", error);
     });
 
-    res.status(200).json({
-      message: "Success"
-    })
+    
   } catch (err) {
     console.log(err)
     res.status(400).json({

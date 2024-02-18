@@ -1,8 +1,9 @@
 import { spawn } from "child_process";
 import mysql from "mysql";
 
+
 // Define the path to your Python script
-const pythonScriptPath = "./python_scripts/your_script.py";
+const pythonScriptPath = "../python_scripts/your_script.py";
 
 // Define arguments to pass to the Python script if needed
 const pythonArgs = ["arg1", "arg2"]; // Modify as needed
@@ -11,6 +12,8 @@ const pythonArgs = ["arg1", "arg2"]; // Modify as needed
 export const executePythonScript = (scriptPath, args) => {
   return new Promise((resolve, reject) => {
     // Spawn a child process to execute the Python script
+    console.log("here");
+    console.log(scriptPath);
     const pythonProcess = spawn("python", [scriptPath, ...args]);
 
     let output = ""; // Variable to capture script output
